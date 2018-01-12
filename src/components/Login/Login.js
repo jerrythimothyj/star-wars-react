@@ -13,7 +13,9 @@ class Login extends Component {
 
         axios.get('https://swapi.co/api/people/?search=' + this.state.name)
             .then((res) => {
-                if(res.data.results[0].name === this.state.name && res.data.results[0].birth_year === this.state.birthyear) {
+                if(res.data.results.length > 0 && 
+                    res.data.results[0].name === this.state.name && 
+                    res.data.results[0].birth_year === this.state.birthyear) {
                     history.push('/planets');
                 } else {
                     console.log('invalid user');
