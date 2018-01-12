@@ -1,0 +1,13 @@
+@font-face{ 
+  font-family: 'StarWars';
+  src: url('StarWars.ttf') format('truetype');
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: StarWars;
+  color: #ffffff;
+  background: url('bg-main.jpg') no-repeat;
+  background-size: cover;
+}

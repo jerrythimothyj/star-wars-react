@@ -1,0 +1,16 @@
+.login {
+    width: 400px;
+    background: rgba(0, 0, 0, 0.5);
+    margin: 0 auto;
+    padding: 50px;
+    border-radius: 11px;
+}
+
+.login .form-control {
+    margin: 20px 0;
+}
+
+.login .btn {
+    margin: 20px 0;
+    width: 100%;
+}
