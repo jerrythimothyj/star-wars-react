@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import axios from '../../axios-base';
 import * as d3 from "d3";
 
 class Planets extends Component {
@@ -521,7 +521,7 @@ class Planets extends Component {
         // let planetColors = {Mercury: "gray", Venus: "#d6bb87", Earth: "#677188", Mars: "#7c5541", Jupiter: "#a36a3e", Saturn: "#e9ba85", Uranus: "#73cbf0", Neptune: "#6383d1"}
       
       
-        let orbit = d3.layout.orbit().size([1000,1000])
+        let orbit = d3.layout.orbit().size([900,900])
             .children(function(d) {return d.values})
             .revolution(function(d) {return 1 / d.orbital_period})
             .orbitSize(function(d) {return orbitScale(d.depth)})
@@ -628,7 +628,7 @@ class Planets extends Component {
       }
     
     render() {
-        axios.get('https://swapi.co/api/planets/?search=' + this.state.planetName)
+        axios.get('planets/?search=' + this.state.planetName)
             .then((res) => {
                 this.makeViz(res.data.results)
             })
