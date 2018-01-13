@@ -6,8 +6,8 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: StarWars;
-  color: #ffffff;
+  font-family: StarWars !important;
+  color: #ffffff !important;
   background: url('./bg-main.jpg') no-repeat;
   background-size: cover;
 }
@@ -15,6 +15,8 @@ body {
 #viz, svg {
   width: 1000px;
   height: 1000px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.5);
 }
 
 text {

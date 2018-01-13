@@ -3,6 +3,16 @@ import axios from 'axios';
 import * as d3 from "d3";
 
 class Planets extends Component {
+    state = {
+        planetName: ''
+    }
+
+    searchPlanet(planetName) {
+        this.setState({
+            planetName: planetName
+        })
+    }
+
     makeViz(planets) {
         d3.json("solarsystem.json", (data) => {data = [
             {
@@ -275,7 +285,8 @@ class Planets extends Component {
         })
 
 
-        
+        document.querySelector('#viz').innerHTML = '';
+        document.querySelector('#viz').innerHTML = '<svg></svg>';
         this.drawOrbit(planets)});
     }
       
@@ -507,7 +518,7 @@ class Planets extends Component {
         let orbitScale = d3.scale.linear().domain([1, 3]).range([3.8, 1.5]).clamp(true);
         let radiusScale = d3.scale.linear().domain([210.64,2500,10000,71492.68]).range([2,4,8,16]);
       
-        let planetColors = {Mercury: "gray", Venus: "#d6bb87", Earth: "#677188", Mars: "#7c5541", Jupiter: "#a36a3e", Saturn: "#e9ba85", Uranus: "#73cbf0", Neptune: "#6383d1"}
+        // let planetColors = {Mercury: "gray", Venus: "#d6bb87", Earth: "#677188", Mars: "#7c5541", Jupiter: "#a36a3e", Saturn: "#e9ba85", Uranus: "#73cbf0", Neptune: "#6383d1"}
       
       
         let orbit = d3.layout.orbit().size([1000,1000])
@@ -533,7 +544,8 @@ class Planets extends Component {
         d3.selectAll("g.node")
             .append("circle")
             .attr("r", function(d) {return d.radius ? radiusScale(d.radius) : 20})
-            .style("fill", function(d) {return d.depth === 0 ? "#FFCC00" : d.depth === 1 ? planetColors[d.key] : "lightgray"});
+            // .style("fill", function(d) {return d.depth === 0 ? "#FFCC00" : d.depth === 1 ? planetColors[d.key] : "lightgray"});
+            .style("fill", function(d) {return d.depth === 0 ? "#FFCC00" : '#'+(Math.random()*0xFFFFFF<<0).toString(16); });
       
         d3.selectAll("g.node").filter(function(d) {return d.depth === 1})
             .append("text")
@@ -551,10 +563,10 @@ class Planets extends Component {
             .attr("cx", function(d) {return d.x})
             .attr("cy", function(d) {return d.y})
       
-        d3.select("#buttons").append("button").html("solar").on("click", function() {newMode("solar")})
-        d3.select("#buttons").append("button").html("flat").on("click", function() {newMode("flat")})
-        d3.select("#buttons").append("button").html("atomic").on("click", function() {newMode("atomic")})
-        d3.select("#buttons").append("button").html("custom").on("click", function() {newMode([4,4])})
+        // d3.select("#buttons").append("button").html("solar").on("click", function() {newMode("solar")})
+        // d3.select("#buttons").append("button").html("flat").on("click", function() {newMode("flat")})
+        // d3.select("#buttons").append("button").html("atomic").on("click", function() {newMode("atomic")})
+        // d3.select("#buttons").append("button").html("custom").on("click", function() {newMode([4,4])})
       
         orbit.on("tick", function() {
           d3.selectAll("g.node")
@@ -567,33 +579,33 @@ class Planets extends Component {
       
         orbit.start();
       
-        let newMode = (_mode) => {
-          orbit.mode(_mode)
-          .nodes(_data);
+        // let newMode = (_mode) => {
+        //   orbit.mode(_mode)
+        //   .nodes(_data);
       
-            d3.select("g.viz")
-            .selectAll("circle.ring")
-            .data(orbit.orbitalRings())
-            .exit()
-            .transition()
-            .duration(500)
-            .style("stroke-opacity", 0)
-            .style("stroke-width", 3)
-            .remove();
+        //     d3.select("g.viz")
+        //     .selectAll("circle.ring")
+        //     .data(orbit.orbitalRings())
+        //     .exit()
+        //     .transition()
+        //     .duration(500)
+        //     .style("stroke-opacity", 0)
+        //     .style("stroke-width", 3)
+        //     .remove();
         
-            d3.select("g.viz")
-            .selectAll("circle.ring")
-            .data(orbit.orbitalRings())
-            .enter()
-            .insert("circle", "g")
-            .attr("class", "ring");
+        //     d3.select("g.viz")
+        //     .selectAll("circle.ring")
+        //     .data(orbit.orbitalRings())
+        //     .enter()
+        //     .insert("circle", "g")
+        //     .attr("class", "ring");
             
-            d3.selectAll("circle.ring")
-            .attr("r", function(d) {return d.r})
-            .attr("cx", function(d) {return d.x})
-            .attr("cy", function(d) {return d.y});
+        //     d3.selectAll("circle.ring")
+        //     .attr("r", function(d) {return d.r})
+        //     .attr("cx", function(d) {return d.x})
+        //     .attr("cy", function(d) {return d.y});
       
-        }
+        // }
       
         function nodeOver(d) {
           orbit.stop();
@@ -614,10 +626,10 @@ class Planets extends Component {
       
       
       }
+    
     render() {
-        axios.get('https://swapi.co/api/planets')
+        axios.get('https://swapi.co/api/planets/?search=' + this.state.planetName)
             .then((res) => {
-                console.log(res);
                 this.makeViz(res.data.results)
             })
             .catch((error) => {
@@ -626,8 +638,14 @@ class Planets extends Component {
 
         return (
             <div className="planets">
-                planets111
-                <div id="viz"><svg></svg><div id="buttons"></div></div>
+                <input type="text" 
+                        className="form-control" 
+                        placeholder="Search planets" 
+                        value={this.state.planetName} 
+                        onChange={(event) => this.searchPlanet(event.target.value)} />
+                <div id="viz">
+                    <svg></svg>
+                </div>
             </div>
         )
     }
