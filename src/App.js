@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
-import Login from './components/Login/Login';
+import { Login } from './components/Login';
 import Planets from './components/Planets/Planets';
 
 class App extends Component {
@@ -19,4 +19,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withRouter(App);
